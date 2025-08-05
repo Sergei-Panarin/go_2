@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 
+	"github.com/Sergei-Panarin/go_2/StandardWebServer/storage"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -13,6 +14,8 @@ type API struct {
 	config *Config
 	logger *logrus.Logger
 	router *mux.Router
+	//Adding field for work with storage
+	storage *storage.Storage
 }
 
 // API constructor: build base API instance
@@ -34,6 +37,10 @@ func (api *API) Start() error {
 	api.logger.Info("Starting api server at port ", api.config.BindAddr)
 	//Configure router
 	api.configureRouterField()
+	//COnfigure Storage connection
+	if err := api.configureStorageField(); err != nil {
+		return err
+	}
 
 	return http.ListenAndServe(api.config.BindAddr, api.router)
 }
