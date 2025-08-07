@@ -22,11 +22,11 @@ func main() {
 	//server instance initialization
 	config := api.NewConfig()
 	_, err := toml.DecodeFile(configPath, config)
+	log.Printf("Loaded config: %+v\n", config)
 	if err != nil {
 		log.Println("can not configs file. using default values for server: ", err)
 	}
 	server := api.New(config)
-
 	//api server start
 	log.Fatal(server.Start())
 }
